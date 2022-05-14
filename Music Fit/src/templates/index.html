@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Music  Fit</title>
+
+    <!-- <link rel="stylesheet" href="{{ url_for('static',filename='styles/style.css') }}"> -->
+    <!-- <script src="{{ url_for('static',filename='scripts/script.js') }}"></script> -->
+    <link rel="stylesheet" href="../static/styles/style.css">
+    <script src="../static/scripts/script.js"></script>
+    <link rel="stylesheet" href="../static/styles/player.css">
+    <script src="../static/scripts/player.js"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans&family=Oswald:wght@300&display=swap" rel="stylesheet">
+
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    
+</head>
+<body>
+    <div class="navbar-cont">
+        <div class="logo">Music Fit</div>
+        <div class="nav-links">
+            <button class="tab" onclick=setPage(0) id="tab-0">Home</button>
+            <button class="tab" onclick=setPage(1) id="tab-1">Activity</button>
+            <button class="tab" onclick=setPage(2) id="tab-2">Sleep</button>
+        </div>
+    </div>
+    <div class="fitbit-cont">
+        <div class="data-heart">
+            <div class="data-icon">
+                <i class="fa-solid fa-heart"></i>
+            </div>
+            <div class="data-value">{{heartRate}} <span class="data-unit">bpm</span></div>
+            <div class="data-state">{{stateHeart}}</div>
+        </div>
+        <div class="data-running">
+            <div class="data-icon">
+                <i class="fa-solid fa-person-running"></i>
+            </div>
+            <div class="data-value">{{distance}} <span class="data-unit">m/s</span></div>
+            <div class="data-state">{{stateRunning}}</div>
+        </div>
+        <div class="data-sleep"> 
+            <div class="data-icon">
+                <i class="fa-solid fa-moon"></i>
+            </div>
+            <div class="data-value">{{sleepEfficiency}} <span class="data-unit">%</span></div>
+            <div class="data-state">{{stateRestless}}</div>
+        </div>
+    </div>
+
+    <div class="recommended-cont" id="song-cont-0">
+        <h2 class="heading">Recommended Songs</h2>
+        {% for value in values %}
+        <div class="song-cont" onclick="getSong(this)">
+            <div class="song-number"></div>
+            <img src = '{{ value[2] }}' alt="cover" class="song-cover"/>
+            <div class="song-name">{{ value[1] }}</div>
+            <div class="song-artist">{{ value[0] }}</div>
+            <div class="song-attrs">
+                <div class="song-energy">
+                    <h3 class="song-attr">Energy</h3>
+                    <div class="song-attr-value">{{ value[3] }}</div>
+                </div>
+                <div class="song-danceability">
+                    <h3 class="song-attr">Danceability</h3>
+                    <div class="song-attr-value">{{ value[4] }}</div>
+                </div>
+                <div class="song-loudness">
+                    <h3 class="song-attr">Loudness</h3>
+                    <div class="song-attr-value">{{ value[5] }}</div>
+                </div>
+                <div class="song-liveness">
+                    <h3 class="song-attr">Liveness</h3>
+                    <div class="song-attr-value">{{ value[6] }}</div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+
+    <div class="recommended-cont" id="song-cont-1">
+        <h2 class="heading">Recommended Songs</h2>
+        {% for value in running %}
+        <div class="song-cont" onclick="getSong(this)">
+            <div class="song-number"></div>
+            <img src = '{{ value[2] }}' alt="cover" class="song-cover"/>
+            <div class="song-name">{{ value[1] }}</div>
+            <div class="song-artist">{{ value[0] }}</div>
+            <div class="song-attrs">
+                <div class="song-energy">
+                    <h3 class="song-attr">Energy</h3>
+                    <div class="song-attr-value">{{ value[3] }}</div>
+                </div>
+                <div class="song-danceability">
+                    <h3 class="song-attr">Danceability</h3>
+                    <div class="song-attr-value">{{ value[4] }}</div>
+                </div>
+                <div class="song-loudness">
+                    <h3 class="song-attr">Loudness</h3>
+                    <div class="song-attr-value">{{ value[5] }}</div>
+                </div>
+                <div class="song-liveness">
+                    <h3 class="song-attr">Liveness</h3>
+                    <div class="song-attr-value">{{ value[6] }}</div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+
+    <div class="recommended-cont" id="song-cont-2">
+        <h2 class="heading">Recommended Songs</h2>
+        {% for value in restless %}
+        <div class="song-cont" onclick="getSong(this)">
+            <div class="song-number"></div>
+            <img src = '{{ value[2] }}' alt="cover" class="song-cover"/>
+            <div class="song-name">{{ value[1] }}</div>
+            <div class="song-artist">{{ value[0] }}</div>
+            <div class="song-attrs">
+                <div class="song-energy">
+                    <h3 class="song-attr">Energy</h3>
+                    <div class="song-attr-value">{{ value[3] }}</div>
+                </div>
+                <div class="song-danceability">
+                    <h3 class="song-attr">Danceability</h3>
+                    <div class="song-attr-value">{{ value[4] }}</div>
+                </div>
+                <div class="song-loudness">
+                    <h3 class="song-attr">Loudness</h3>
+                    <div class="song-attr-value">{{ value[5] }}</div>
+                </div>
+                <div class="song-liveness">
+                    <h3 class="song-attr">Liveness</h3>
+                    <div class="song-attr-value">{{ value[6] }}</div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+
+    <div class="audio-player-cont" id="audio-player-cont">
+        <div id="player"></div>
+        
+        <div class="audio-player">
+            <div class="player-controls">
+                <div id="radioIcon"></div>
+                <button id="playAudio"></button>
+                <div id="seekObjContainer">
+                    <div id="seekObj">
+                        <div id="percentage"></div>
+                    </div>
+                </div>
+                <p><small id="currentTime">00:00</small></p>
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript" src="https://www.youtube.com/iframe_api"></script>
+</body>
+</html>
